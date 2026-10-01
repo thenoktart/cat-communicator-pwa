@@ -5,7 +5,6 @@ import sqlite3
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Annotated
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
@@ -19,7 +18,7 @@ STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 RECORDINGS_DIR.mkdir(parents=True, exist_ok=True)
 
-app = FastAPI(title="Cat Communicator MVP", version="0.1.0")
+app = FastAPI(title="Cat Communicator MVP", version="0.1.1")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
@@ -60,6 +59,11 @@ def index():
     return FileResponse(STATIC_DIR / "index.html")
 
 
+@app.get("/health")
+def health():
+    return {"ok": True}
+
+
 def suffix_for_mime(mime: str) -> str:
     clean = (mime or "").split(";")[0].strip().lower()
     known = {
@@ -75,13 +79,13 @@ def suffix_for_mime(mime: str) -> str:
 
 @app.post("/api/records")
 async def create_record(
-    audio: Annotated[UploadFile, File(...)],
-    cat_name: Annotated[str, Form(...)],
-    label: Annotated[str, Form(...)],
-    context: Annotated[str, Form("")],
-    outcome: Annotated[str, Form("")],
-    notes: Annotated[str, Form("")],
-    duration_ms: Annotated[int | None, Form()] = None,
+    audio: UploadFile = File(...),
+    cat_name: str = Form(...),
+    label: str = Form(...),
+    context: str = Form(""),
+    outcome: str = Form(""),
+    notes: str = Form(""),
+    duration_ms: int | None = Form(None),
 ):
     allowed_labels = {
         "food", "attention", "play", "door", "greeting", "stress", "unknown"
