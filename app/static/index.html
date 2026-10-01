@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#111111" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Cat AI" />
+  <link rel="manifest" href="/static/manifest.webmanifest" />
+  <link rel="icon" href="/static/icons/cat-icon.svg" type="image/svg+xml" />
+  <title>Cat Communicator — Veri Toplama</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div class="eyebrow">CAT COMMUNICATOR · MVP 0.1</div>
+      <h1>Kedini dinle.<br />Örüntüleri öğren.</h1>
+      <p>Her temiz vokalizasyonu kaydet, bağlamını etiketle ve kedinin sonrasında ne yaptığını belirt.</p>
+    </header>
+
+    <section id="installCard" class="card install-card">
+      <div>
+        <strong>Telefona kur</strong>
+        <div class="muted" id="installHint">Ana ekrana ekleyerek uygulama gibi kullanabilirsin.</div>
+      </div>
+      <button id="installBtn" class="primary hidden">Uygulamayı yükle</button>
+    </section>
+
+    <section class="card status-card">
+      <div>
+        <div class="metric"><span id="totalCount">0</span><small> kayıt</small></div>
+        <div class="muted">İlk kişisel model hedefi: ~200 etiketli kayıt</div>
+      </div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </section>
+
+    <section class="card">
+      <label>Kedinin adı</label>
+      <input id="catName" placeholder="Örn. Luna" autocomplete="off" />
+
+      <div class="recorder">
+        <div id="pulse" class="pulse"></div>
+        <div id="timer" class="timer">00:00.0</div>
+        <button id="recordBtn" class="primary">Kaydı başlat</button>
+        <button id="stopBtn" class="danger hidden">Kaydı durdur</button>
+        <audio id="preview" controls class="hidden"></audio>
+      </div>
+
+      <div id="formFields" class="hidden">
+        <label>Bu sesin en olası bağlamı neydi?</label>
+        <select id="label">
+          <option value="unknown">Bilmiyorum</option>
+          <option value="food">Mama / yemek beklentisi</option>
+          <option value="attention">İlgi isteme</option>
+          <option value="play">Oyun</option>
+          <option value="door">Kapı / dışarı çıkma</option>
+          <option value="greeting">Selamlama</option>
+          <option value="stress">Stres / rahatsızlık</option>
+        </select>
+
+        <label>O anda ne oluyordu?</label>
+        <textarea id="context" placeholder="Örn. Mama saatinden 5 dk önce mutfakta bana bakıyordu."></textarea>
+
+        <label>Sesin ardından ne yaptı?</label>
+        <select id="outcome">
+          <option value="unknown">Bilmiyorum</option>
+          <option value="stopped">Sesi kesti</option>
+          <option value="approached">Yanıma geldi</option>
+          <option value="food_bowl">Mama kabına gitti</option>
+          <option value="door">Kapıya gitti</option>
+          <option value="toy">Oyuncağa gitti</option>
+          <option value="no_reaction">Belirgin tepki olmadı</option>
+          <option value="other">Diğer</option>
+        </select>
+
+        <label>Not</label>
+        <textarea id="notes" placeholder="İsteğe bağlı: kulak/kuyruk duruşu, saat, ortam vb."></textarea>
+
+        <button id="saveBtn" class="primary">Kaydı veri setine ekle</button>
+        <button id="discardBtn" class="secondary">Bu kaydı sil</button>
+      </div>
+
+      <div id="message" class="message"></div>
+    </section>
+
+    <section class="card">
+      <h2>Son kayıtlar</h2>
+      <div id="recent"></div>
+    </section>
+
+    <footer>
+      İlk aşamada amaç “çeviri” değil, kedine özel güvenilir ses–bağlam veri seti oluşturmaktır.
+    </footer>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
